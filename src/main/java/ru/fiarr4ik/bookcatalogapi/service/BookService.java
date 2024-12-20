@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookService {
 
-    void addBook(Book book);
+    Book addBook(Book book);
 
     void updateBook(Book book, int id);
 
@@ -16,10 +16,10 @@ public interface BookService {
 
     Book getBookById(int id);
 
-    Book getBookByTitle(String title);
+    List<Book> getBooksByTitle(String title);
 
-    Book getBookByAuthor(String author);
+    List<Book> getBooksByAuthor(String author);
 
-    Book getBookByGenre(String genre);
+    List<Book> getBooksByGenre(String genre);
 
 }

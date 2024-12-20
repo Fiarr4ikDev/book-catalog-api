@@ -20,8 +20,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addBook(Book book) {
-        bookRepository.save(book);
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
     }
 
     @Override
@@ -51,25 +51,26 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookById(int id) {
         Optional<Book> findBook = bookRepository.findBookById(id);
-        return findBook.orElse(null);
+        if (findBook.isPresent()) {
+            return findBook.get();
+        } else {
+            throw new BookNotFoundException("Книга не найдена с id" + id);
+        }
     }
 
     @Override
-    public Book getBookByTitle(String title) {
-        Optional<Book> findBook = bookRepository.findBookByTitle(title);
-        return findBook.orElse(null);
+    public List<Book> getBooksByTitle(String title) {
+        return bookRepository.findBooksByTitle(title);
     }
 
     @Override
-    public Book getBookByAuthor(String author) {
-        Optional<Book> findBook = bookRepository.findBookByAuthor(author);
-        return findBook.orElse(null);
+    public List<Book> getBooksByAuthor(String author) {
+        return bookRepository.findBooksByAuthor(author);
     }
 
     @Override
-    public Book getBookByGenre(String genre) {
-        Optional<Book> findBook = bookRepository.findBookByGenre(genre);
-        return findBook.orElse(null);
+    public List<Book> getBooksByGenre(String genre) {
+        return bookRepository.findBooksByGenre(genre);
     }
 
 }

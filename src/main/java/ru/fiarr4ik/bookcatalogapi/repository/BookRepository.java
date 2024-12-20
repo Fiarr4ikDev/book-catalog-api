@@ -1,6 +1,7 @@
 package ru.fiarr4ik.bookcatalogapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.fiarr4ik.bookcatalogapi.model.Book;
 
 import java.util.List;
@@ -8,14 +9,15 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
+    @Query("SELECT b FROM Book b")
     List<Book> findAllBook();
 
     Optional<Book> findBookById(Integer id);
 
-    Optional<Book> findBookByTitle(String title);
+    List<Book> findBooksByTitle(String title);
 
-    Optional<Book> findBookByAuthor(String author);
+    List<Book> findBooksByAuthor(String author);
 
-    Optional<Book> findBookByGenre(String genre);
+    List<Book> findBooksByGenre(String genre);
 
 }
