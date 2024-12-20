@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.fiarr4ik.bookcatalogapi.exception.BookNotFoundException;
+import ru.fiarr4ik.bookcatalogapi.exception.ResponseMessage;
 import ru.fiarr4ik.bookcatalogapi.model.Book;
 import ru.fiarr4ik.bookcatalogapi.service.BookService;
 
@@ -34,11 +35,11 @@ public class BookController {
     }
 
     @GetMapping("/get/id/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getBookById(@PathVariable("id") int id) {
         try {
             bookService.getBookById(id);
         } catch (BookNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Книга с id " + id + " не найдена"));
         }
         return ResponseEntity.ok(bookService.getBookById(id));
     }
@@ -58,19 +59,20 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBooksByGenre(genre));
     }
 
+    //TODO
     @PatchMapping("/update/{id}")
     public ResponseEntity<?> updateBook(@PathVariable("id") int id, @RequestBody Book book) {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") int id) {
+    public ResponseEntity<ResponseMessage> deleteBook(@PathVariable("id") int id) {
         try {
             bookService.deleteBook(id);
         } catch (BookNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(new ResponseMessage("Кнгига удалена"));
     }
 
     @GetMapping("/get/all")
